@@ -12,9 +12,9 @@ import AppKit
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
     var statusItem: NSStatusItem?
-    var timer: Timer?
-    var isTimerRunning = false
-    var timerDuration: Double = 30.0
+    
+    // Using the observable timer manager
+    let timerManager = TimerManager()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -57,57 +57,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Remove the black border
         panel.hasShadow = false
         
-        let contentView = OverlayContentView()
+        let contentView = OverlayContentView(timerManager: timerManager)
         panel.contentView = NSHostingView(rootView: contentView)
         
         panel.orderFrontRegardless()
         window = panel
         
         // Start the timer when the panel is opened
-        startTimer()
+        timerManager.start()
     }
         
     @objc func pauseTimer() {
-        timer?.invalidate()
-        timer = nil
-        isTimerRunning = false
-        updateContentView()
+        timerManager.pause()
     }
     
     @objc func resetTimer() {
-        timer?.invalidate()
-        timer = nil
-        isTimerRunning = false
-        updateContentView()
+        timerManager.reset()
     }
         
     @objc func quitApp() {
         NSApplication.shared.terminate(nil)
     }
-    
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.timerDuration -= 1.0
-            if self.timerDuration <= 0 {
-                self.timer?.invalidate()
-                self.timer = nil
-                self.isTimerRunning = false
-                self.updateContentView()
-                return
-            }
-            
-            self.updateContentView()
-        }
-    }
-    
-    func updateContentView() {
-    // Update the content view with the current timer duration
-    if let window = window {
-        if let contentView = window.contentView as? NSHostingView<OverlayContentView> {
-            contentView.rootView.updateTimer(duration: timerDuration)
-        }
-    }
-}
 }

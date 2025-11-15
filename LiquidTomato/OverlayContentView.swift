@@ -8,19 +8,25 @@
 import SwiftUI
 
 struct OverlayContentView: View {
-    @State private var timerDuration: Double = 30.0
+    let timerManager: TimerManager
     
     var body: some View {
-        VStack {
-            Text("Hello world")
-                .foregroundColor(.white)
-                .font(.headline)
+        ZStack {
+            // Circular progress ring
+            CircularProgressRing(progress: timerManager.progress)
+                .frame(width: 145, height: 145)
+                .padding(10)
+            
+            // Timer text in center
+            VStack {
+                Text(timerManager.formattedTime)
+                    .foregroundColor(.white)
+                    .font(.system(size: 48, weight: .thin, design: .default))
+                    .monospacedDigit()
+                    .fixedSize()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .glassEffect(.clear.interactive())
-    }
-    
-    func updateTimer(duration: Double) {
-        timerDuration = duration
     }
 }
