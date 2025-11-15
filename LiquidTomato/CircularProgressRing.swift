@@ -12,6 +12,7 @@ import SwiftUI
 
 struct CircularProgressRing: View {
     let progress: Double // 0.0 to 1.0
+    let color: Color
     let lineWidth: CGFloat = 8.0
     
     var body: some View {
@@ -30,7 +31,7 @@ struct CircularProgressRing: View {
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.orange,
+                    color,
                     style: StrokeStyle(
                         lineWidth: lineWidth,
                         lineCap: .round
