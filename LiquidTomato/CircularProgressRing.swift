@@ -13,11 +13,11 @@ import SwiftUI
 struct CircularProgressRing: View {
     let progress: Double // 0.0 to 1.0
     let color: Color
-    let lineWidth: CGFloat = 8.0
+    let lineWidth: CGFloat = 3.0
     
     var body: some View {
         ZStack {
-            // Background ring (gray)
+            // Background ring
             Circle()
                 .stroke(
                     Color.white.opacity(0.15),
@@ -27,7 +27,7 @@ struct CircularProgressRing: View {
                     )
                 )
             
-            // Progress ring (orange)
+            // Progress ring
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(

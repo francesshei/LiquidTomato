@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // Using the observable timer manager
     let timerManager = TimerManager()
+    let panelSize = 105.0
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -34,10 +35,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem?.menu = menu
     }
     
+        // Calculate panel position for top-right corner of the given screen
+        func topRightPosition(on screen: NSScreen? = NSScreen.main) -> CGPoint {
+            guard let screen = screen else {
+                // Fallback to center if no screen available
+                return CGPoint(x: 200, y: 200)
+            }
+    
+            let screenFrame = screen.visibleFrame // Excludes menu bar and dock
+            let padding = 20.0
+    
+            let x = screenFrame.maxX - panelSize - padding
+            let y = screenFrame.maxY - panelSize - padding
+            return CGPoint(x: x, y: y)
+        }
+    
     @objc func openApp() {
+        // Get dynamic position for top-right corner
+        let position = topRightPosition()
+        
         // Handle open action
         let panel = NSPanel(
-            contentRect: NSRect(x: 200, y: 200, width: 165, height: 165),
+            contentRect: NSRect(
+                x: position.x,
+                y: position.y,
+                width: panelSize,
+                height: panelSize
+            ),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false

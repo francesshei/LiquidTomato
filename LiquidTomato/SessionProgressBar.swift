@@ -15,15 +15,15 @@ struct SessionProgressBar: View {
     let totalSessions: Int = 4
     
     var body: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 1) {
             ForEach(1...totalSessions, id: \.self) { session in
                 Circle()
                     .fill(session <= currentSession ? Color.white : Color.white.opacity(0.2))
-                    .frame(width: 6, height: 6)
+                    .frame(width: 4, height: 4)
             }
         }
-        .padding(.horizontal, 4)
-        .padding(.vertical, 4)
+        .padding(.horizontal, 2)
+        .padding(.vertical, 2)
         .background(
             Capsule()
                 .fill(Color.white.opacity(0.1))
