@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct LiquidTomatoApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Settings {
+            EmptyView()
         }
     }
 }
